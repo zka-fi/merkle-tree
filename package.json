@@ -1,0 +1,24 @@
+{
+  "name": "zkafi-merkle-tree",
+  "version": "0.0.0",
+  "description": "merkle tree for zkafi (ETHGlobal tokyo 2023 hackathon)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint -c .eslintrc \"./**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zka-fi/merkle-tree.git"
+  },
+  "author": "kth-tw",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/zka-fi/merkle-tree/issues"
+  },
+  "homepage": "https://github.com/zka-fi/merkle-tree#readme",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.4"
+  }
+}
