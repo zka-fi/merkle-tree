@@ -77,7 +77,6 @@ const getInitSMT = async (couchdbConfig: CouchdbConfigType) => {
 }
 
 export const createSMT = async (data: {index: number; value: any}[], couchdbConfig: CouchdbConfigType) => {
-  const couchdb = getCouchdb(couchdbConfig)
   const { leaves, layers } = await getInitSMT(couchdbConfig)
   const hashFunction = await getPoseidonHashFunction()
 
