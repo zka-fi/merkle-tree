@@ -1,5 +1,16 @@
 {
   "extends": [
     "./node_modules/ericlint"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off"
+      }
+    }
   ]
 }
