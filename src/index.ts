@@ -77,6 +77,16 @@ const getInitSMT = async (couchdbConfig: CouchdbConfigType) => {
 }
 
 export const createSMT = async (data: {index: number; value: any}[], couchdbConfig: CouchdbConfigType) => {
+  /**
+   * index 0: (string) w3c credential url
+   * index 1: (string) ID
+   * index 2: (string) issuer
+   * index 3: (number) expired timestamp (ms)
+   * index 4: (number) value
+   * index 5: (boolean) revoke (1: revoke, 0: not revoke)
+   * index 6: (string) slotA
+   * index 7: (string) slotB
+   */
   const { leaves, layers } = await getInitSMT(couchdbConfig)
   const hashFunction = await getPoseidonHashFunction()
 
