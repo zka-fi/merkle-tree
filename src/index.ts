@@ -3,8 +3,11 @@ import { MerkleTree } from 'merkletreejs'
 import { buildPoseidon } from 'circomlibjs'
 import nano from 'nano'
 
-const couchdb = nano('http://admin:password@localhost:5984').use('merkle-tree')
-const insertIfNotExist = async (root: string, layers: string[][], leaves: any[]) => {
+interface couchdbConfigType {user: string; password: string; host: string; port?: number}
+
+const getCouchdb = (config: couchdbConfigType) => nano(`http://${config.user}:${config.password}@${config.host}:${config.port || 5984}`).use('merkle-tree')
+const insertIfNotExist = async (root: string, layers: string[][], leaves: any[], couchdbConfig: couchdbConfigType) => {
+  const couchdb = getCouchdb(couchdbConfig)
   try {
     await couchdb.get(root)
   } catch (err) {
@@ -45,7 +48,8 @@ const anyToBigNumber = (input: any) => {
   }
 }
 
-const getInitSMT = async () => {
+const getInitSMT = async (couchdbConfig: couchdbConfigType) => {
+  const couchdb = getCouchdb(couchdbConfig)
   try {
     // @ts-ignore
     const { leaves, layers } = await couchdb.get('0x2f194faeacf4af40d85a0990eb479cae2bc7f60e8be98153430bc352bbd12da3')
@@ -65,15 +69,16 @@ const getInitSMT = async () => {
   ]
   const tree = new MerkleTree(leaves, hashFunction, { hashLeaves: true, concatenator: (hashes) => hashes })
   const layers = (tree.getLayers() as unknown as Buffer[][]).map(layer => layer.map(node => MerkleTree.bufferToHex(node)))
-  await insertIfNotExist(layers[layers.length - 1][0], layers, leaves)
+  await insertIfNotExist(layers[layers.length - 1][0], layers, leaves, couchdbConfig)
   return {
     layers,
     leaves,
   }
 }
 
-const createSMT = async (data: {index: number; value: any}[]) => {
-  const { leaves, layers } = await getInitSMT()
+const createSMT = async (data: {index: number; value: any}[], couchdbConfig: couchdbConfigType) => {
+  const couchdb = getCouchdb(couchdbConfig)
+  const { leaves, layers } = await getInitSMT(couchdbConfig)
   const hashFunction = await getPoseidonHashFunction()
 
   const newLayers: string[][] = []
@@ -97,14 +102,15 @@ const createSMT = async (data: {index: number; value: any}[]) => {
       }
     }
   }
-  await insertIfNotExist(newLayers[newLayers.length - 1][0], newLayers, leaves)
+  await insertIfNotExist(newLayers[newLayers.length - 1][0], newLayers, leaves, couchdbConfig)
   return {
     layers: newLayers,
     leaves: leaves,
   }
 }
 
-const proofByIndex = async (index: number, value: any, root: string) => {
+const proofByIndex = async (index: number, value: any, root: string, couchdbConfig: couchdbConfigType) => {
+  const couchdb = getCouchdb(couchdbConfig)
   const key = ([
     'certUrl',
     'certId',
