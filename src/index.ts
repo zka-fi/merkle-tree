@@ -63,13 +63,8 @@ const updateSMT = async (leaves: any[], layers: string[][], data: {index: number
 
   for (let i = 1; i < layers.length; i += 1) {
     for (let j = 0; j < layers[i].length; j += 1) {
-      console.log('old', i, j, newLayers[i][j])
-      console.log(newLayers[i - 1][2 * j], layers[i - 1][2 * j])
-      console.log(newLayers[i - 1][2 * j + 1], layers[i - 1][2 * j + 1])
       if (newLayers[i - 1][2 * j] !== layers[i - 1][2 * j] || newLayers[i - 1][2 * j + 1] !== layers[i - 1][2 * j + 1]) {
-        console.log('111')
         newLayers[i][j] = MerkleTree.bufferToHex(hashFunction([newLayers[i - 1][2 * j], newLayers[i - 1][2 * j + 1]]))
-        console.log(i, j, newLayers[i][j])
       }
     }
   }
