@@ -76,7 +76,7 @@ const getInitSMT = async (couchdbConfig: CouchdbConfigType) => {
   }
 }
 
-const createSMT = async (data: {index: number; value: any}[], couchdbConfig: CouchdbConfigType) => {
+export const createSMT = async (data: {index: number; value: any}[], couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   const { leaves, layers } = await getInitSMT(couchdbConfig)
   const hashFunction = await getPoseidonHashFunction()
@@ -109,7 +109,7 @@ const createSMT = async (data: {index: number; value: any}[], couchdbConfig: Cou
   }
 }
 
-const proofByIndex = async (index: number, value: any, root: string, couchdbConfig: CouchdbConfigType) => {
+export const proofByIndex = async (index: number, value: any, root: string, couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   const key = ([
     'certUrl',

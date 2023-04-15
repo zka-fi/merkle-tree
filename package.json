@@ -2,9 +2,10 @@
   "name": "zkafi-merkle-tree",
   "version": "0.0.0",
   "description": "merkle tree for zkafi (ETHGlobal tokyo 2023 hackathon)",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "lint": "eslint -c .eslintrc \"./**/*.ts\""
   },
   "repository": {
