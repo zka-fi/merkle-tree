@@ -11,3 +11,23 @@ const getPoseidonHashFunction = async () => {
     ))
   }
 }
+
+const getInitSMT = async () => {
+  const hashFunction = await getPoseidonHashFunction()
+  const leaves = [
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+  ]
+  const tree = new MerkleTree(leaves, hashFunction, { hashLeaves: true })
+  const layers = (tree.getLayers() as unknown as Buffer[][]).map(layer => layer.map(node => node.toString('hex')))
+  return {
+    layers,
+    leaves,
+  }
+}

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "circomlibjs": "^0.1.7",
-    "merkletreejs": "^0.3.9"
+    "merkletreejs": "^0.3.9",
+    "nano": "^10.1.2"
   }
 }
