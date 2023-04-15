@@ -3,10 +3,10 @@ import { MerkleTree } from 'merkletreejs'
 import { buildPoseidon } from 'circomlibjs'
 import nano from 'nano'
 
-interface couchdbConfigType {user: string; password: string; host: string; port?: number}
+interface CouchdbConfigType {user: string; password: string; host: string; port?: number}
 
-const getCouchdb = (config: couchdbConfigType) => nano(`http://${config.user}:${config.password}@${config.host}:${config.port || 5984}`).use('merkle-tree')
-const insertIfNotExist = async (root: string, layers: string[][], leaves: any[], couchdbConfig: couchdbConfigType) => {
+const getCouchdb = (config: CouchdbConfigType) => nano(`http://${config.user}:${config.password}@${config.host}:${config.port || 5984}`).use('merkle-tree')
+const insertIfNotExist = async (root: string, layers: string[][], leaves: any[], couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   try {
     await couchdb.get(root)
@@ -48,7 +48,7 @@ const anyToBigNumber = (input: any) => {
   }
 }
 
-const getInitSMT = async (couchdbConfig: couchdbConfigType) => {
+const getInitSMT = async (couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   try {
     // @ts-ignore
@@ -76,7 +76,7 @@ const getInitSMT = async (couchdbConfig: couchdbConfigType) => {
   }
 }
 
-const createSMT = async (data: {index: number; value: any}[], couchdbConfig: couchdbConfigType) => {
+const createSMT = async (data: {index: number; value: any}[], couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   const { leaves, layers } = await getInitSMT(couchdbConfig)
   const hashFunction = await getPoseidonHashFunction()
@@ -109,7 +109,7 @@ const createSMT = async (data: {index: number; value: any}[], couchdbConfig: cou
   }
 }
 
-const proofByIndex = async (index: number, value: any, root: string, couchdbConfig: couchdbConfigType) => {
+const proofByIndex = async (index: number, value: any, root: string, couchdbConfig: CouchdbConfigType) => {
   const couchdb = getCouchdb(couchdbConfig)
   const key = ([
     'certUrl',
