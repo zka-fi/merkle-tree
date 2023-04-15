@@ -73,3 +73,35 @@ const updateSMT = async (leaves: any[], layers: string[][], data: {index: number
     leaves: leaves,
   }
 }
+
+const proofByIndex = (index: number, value: any, layers: string[][]) => {
+  const key = ([
+    'certUrl',
+    'certId',
+    'certIssuer',
+    'certExpired',
+    'certValue',
+    'certRevoke',
+    'slotA',
+    'slotB',
+  ])[index]
+
+  const path: string[] = []
+  const idx: number[] = []
+
+  for (let i = 0; i < layers.length; i += 1) {
+    const isRightNode = index % 2
+    if (isRightNode) {
+      path.push(layers[i][index - 1])
+      idx.push(1)
+    } else {
+      if (index + 1 < layers[i].length) {
+        path.push(layers[i][index + 1])
+        idx.push(0)
+      }
+    }
+    index = (index / 2) | 0
+  }
+
+  return { [key]: value, path, idx, accountRoot: layers[layers.length - 1][0] }
+}
