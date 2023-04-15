@@ -24,7 +24,7 @@ const getInitSMT = async () => {
     -1,
     -1,
   ]
-  const tree = new MerkleTree(leaves, hashFunction, { hashLeaves: true })
+  const tree = new MerkleTree(leaves, hashFunction, { hashLeaves: true, concatenator: (hashes) => hashes })
   const layers = (tree.getLayers() as unknown as Buffer[][]).map(layer => layer.map(node => MerkleTree.bufferToHex(node)))
   return {
     layers,
